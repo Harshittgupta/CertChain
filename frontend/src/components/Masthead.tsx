@@ -23,9 +23,11 @@ export function Masthead() {
             <button className="quiet" onClick={() => disconnect()}>Disconnect</button>
           </>
         ) : (
-          <button className="quiet" onClick={() => connect({ connector: connectors[0] })}>
-            Connect wallet
-          </button>
+          connectors.map((connector) => (
+            <button key={connector.uid} className="quiet" onClick={() => connect({ connector })}>
+              {connector.name.toLowerCase().includes("mock") ? "Connect Dev Wallet" : `Connect ${connector.name}`}
+            </button>
+          ))
         )}
       </div>
       {error && <p className="error-note">{error.message.split("\n")[0]} - is a browser wallet installed?</p>}

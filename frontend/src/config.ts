@@ -1,7 +1,8 @@
 import { http, createConfig } from "wagmi";
 import { sepolia } from "wagmi/chains";
-import { injected } from "wagmi/connectors";
+import { injected, mock } from "wagmi/connectors";
 import { defineChain, type Address } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
 
 /**
  * Local anvil chain. `anvil` + the Deploy script from a fresh chain always produces the
@@ -15,9 +16,25 @@ export const anvilLocal = defineChain({
   rpcUrls: { default: { http: ["http://127.0.0.1:8545"] } },
 });
 
+const enableDevWallet = import.meta.env.VITE_ENABLE_DEV_WALLET === "true";
+
+// Dev-only wallet using Anvil test key 0
+const devAccount = privateKeyToAccount(
+  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+);
+
 export const config = createConfig({
   chains: [anvilLocal, sepolia],
-  connectors: [injected()],
+  connectors: [
+    ...(enableDevWallet
+      ? [
+          mock({
+            accounts: [devAccount.address],
+          }),
+        ]
+      : []),
+    injected(),
+  ],
   transports: {
     [anvilLocal.id]: http("http://127.0.0.1:8545"),
     // Leave VITE_SEPOLIA_RPC_URL unset to use viem's default public Sepolia RPC
