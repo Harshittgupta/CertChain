@@ -20,7 +20,7 @@ contract CertChainHandler is Test {
     bytes32[] public ghost_allIssuedIds;
     mapping(bytes32 => bool) public ghost_everIssued;
     mapping(bytes32 => bool) public ghost_everRevoked;
-    
+
     struct MintedToken {
         uint256 tokenId;
         address initialOwner;
@@ -86,7 +86,7 @@ contract CertChainHandler is Test {
         bytes32 id = ghost_allIssuedIds[indexChoice % ghost_allIssuedIds.length];
         uint256 tokenId = uint256(id);
 
-        (bool ok, ) = credentialRegistry.verify(id);
+        (bool ok,) = credentialRegistry.verify(id);
         if (!ok) return;
 
         // Mint can be called by issuer or recipient
@@ -153,7 +153,12 @@ contract CertChainInvariantTest is StdInvariant, Test {
             bytes32 id = handler.ghost_allIssuedIds(i);
             if (handler.ghost_everRevoked(id)) {
                 (bool ok, string memory reason) = credentialRegistry.verify(id);
-                assertFalse(ok, string.concat("Revoked credential verified true! ID: ", vm.toString(id), " Reason: ", reason));
+                assertFalse(
+                    ok,
+                    string.concat(
+                        "Revoked credential verified true! ID: ", vm.toString(id), " Reason: ", reason
+                    )
+                );
             }
         }
     }
@@ -176,7 +181,7 @@ contract CertChainInvariantTest is StdInvariant, Test {
     function invariant_unissuedCredentialNeverVerifies() public view {
         bytes32 unissuedId = keccak256("phantom_unissued_credential_id");
         if (!handler.ghost_everIssued(unissuedId)) {
-            (bool ok, ) = credentialRegistry.verify(unissuedId);
+            (bool ok,) = credentialRegistry.verify(unissuedId);
             assertFalse(ok, "Unissued credential verified true!");
         }
     }

@@ -303,8 +303,7 @@ contract CredentialRegistryTest is Test {
     }
 
     function test_batch_fourLeafTreeWithTwoStepProof() public {
-        address[4] memory recipients =
-            [student, makeAddr("s2"), makeAddr("s3"), makeAddr("s4")];
+        address[4] memory recipients = [student, makeAddr("s2"), makeAddr("s3"), makeAddr("s4")];
         bytes32[4] memory leaves;
         for (uint256 i = 0; i < 4; i++) {
             leaves[i] = registry.batchLeaf(recipients[i], SCHEMA, keccak256(abi.encode("marks", i)));
@@ -319,8 +318,9 @@ contract CredentialRegistryTest is Test {
         bytes32[] memory proof = new bytes32[](2);
         proof[0] = leaves[1];
         proof[1] = right;
-        (bool ok,) =
-            registry.verifyInBatch(root, recipients[0], SCHEMA, keccak256(abi.encode("marks", uint256(0))), proof);
+        (bool ok,) = registry.verifyInBatch(
+            root, recipients[0], SCHEMA, keccak256(abi.encode("marks", uint256(0))), proof
+        );
         assertTrue(ok);
     }
 

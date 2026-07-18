@@ -20,24 +20,46 @@ contract CredentialFixturesTest is Test {
 
         string memory part1 = string.concat(
             "  {\n",
-            '    "issuer": "', vm.toString(cred.issuer), '",\n',
-            '    "recipient": "', vm.toString(cred.recipient), '",\n',
-            '    "schemaId": "', vm.toString(cred.schemaId), '",\n',
-            '    "dataHash": "', vm.toString(cred.dataHash), '",\n'
+            '    "issuer": "',
+            vm.toString(cred.issuer),
+            '",\n',
+            '    "recipient": "',
+            vm.toString(cred.recipient),
+            '",\n',
+            '    "schemaId": "',
+            vm.toString(cred.schemaId),
+            '",\n',
+            '    "dataHash": "',
+            vm.toString(cred.dataHash),
+            '",\n'
         );
 
         string memory part2 = string.concat(
-            '    "uri": "', cred.uri, '",\n',
-            '    "issuedAt": "', vm.toString(cred.issuedAt), '",\n',
-            '    "expiresAt": "', vm.toString(cred.expiresAt), '",\n',
-            '    "nonce": "', vm.toString(cred.nonce), '",\n'
+            '    "uri": "',
+            cred.uri,
+            '",\n',
+            '    "issuedAt": "',
+            vm.toString(cred.issuedAt),
+            '",\n',
+            '    "expiresAt": "',
+            vm.toString(cred.expiresAt),
+            '",\n',
+            '    "nonce": "',
+            vm.toString(cred.nonce),
+            '",\n'
         );
 
         string memory part3 = string.concat(
             '    "chainId": 31337,\n',
-            '    "verifyingContract": "', vm.toString(address(credentialRegistry)), '",\n',
-            '    "expectedCredentialId": "', vm.toString(credId), '",\n',
-            '    "expectedTypedDataHash": "', vm.toString(typedHash), '"\n  }'
+            '    "verifyingContract": "',
+            vm.toString(address(credentialRegistry)),
+            '",\n',
+            '    "expectedCredentialId": "',
+            vm.toString(credId),
+            '",\n',
+            '    "expectedTypedDataHash": "',
+            vm.toString(typedHash),
+            '"\n  }'
         );
 
         return string.concat(part1, part2, part3);
@@ -108,11 +130,7 @@ contract CredentialFixturesTest is Test {
 
         string memory json = "[\n";
         for (uint256 i = 0; i < creds.length; i++) {
-            json = string.concat(
-                json,
-                _buildJsonItem(creds[i]),
-                i < creds.length - 1 ? ",\n" : "\n"
-            );
+            json = string.concat(json, _buildJsonItem(creds[i]), i < creds.length - 1 ? ",\n" : "\n");
         }
         json = string.concat(json, "]\n");
 

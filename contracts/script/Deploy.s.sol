@@ -16,7 +16,10 @@ import {SoulboundCertificate} from "../src/SoulboundCertificate.sol";
 ///   export PRIVATE_KEY=<anvil key 0>         # terminal 2
 ///   forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
 contract Deploy is Script {
-    function run() external returns (IssuerRegistry issuers, CredentialRegistry credentials, SoulboundCertificate certificate) {
+    function run()
+        external
+        returns (IssuerRegistry issuers, CredentialRegistry credentials, SoulboundCertificate certificate)
+    {
         uint256 deployerKey = vm.envUint("PRIVATE_KEY");
         address deployer = vm.addr(deployerKey);
 

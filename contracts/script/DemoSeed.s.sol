@@ -33,7 +33,9 @@ contract DemoSeed is Script {
             issuer: deployer,
             recipient: recipient,
             schemaId: keccak256(bytes("BTECH_DEGREE_V1")),
-            dataHash: keccak256(bytes("{\"degree\":\"B.Tech\",\"branch\":\"Computer Engineering\",\"year\":2027}")),
+            dataHash: keccak256(
+                bytes("{\"degree\":\"B.Tech\",\"branch\":\"Computer Engineering\",\"year\":2027}")
+            ),
             uri: "",
             issuedAt: uint64(block.timestamp),
             expiresAt: 0,

@@ -160,7 +160,14 @@ contract CredentialRegistry is EIP712 {
         statusOf[id] = Status.Active;
         _credentials[id] = cred;
         emit CredentialIssued(
-            id, cred.issuer, cred.recipient, cred.schemaId, cred.dataHash, cred.uri, cred.issuedAt, cred.expiresAt
+            id,
+            cred.issuer,
+            cred.recipient,
+            cred.schemaId,
+            cred.dataHash,
+            cred.uri,
+            cred.issuedAt,
+            cred.expiresAt
         );
     }
 
