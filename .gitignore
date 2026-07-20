@@ -6,3 +6,4 @@ broadcast/
 .env
 .env.local
 *.log
+slither_report.json
