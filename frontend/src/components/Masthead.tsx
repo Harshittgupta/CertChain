@@ -1,12 +1,15 @@
-import { useAccount, useChainId, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useChainId, useConnect, useDisconnect, useSwitchChain } from "wagmi";
+import { sepolia } from "wagmi/chains";
 import { shortHex } from "../lib/credential";
 
 export function Masthead() {
   const { address, isConnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const { disconnect } = useDisconnect();
+  const { switchChain } = useSwitchChain();
   const chainId = useChainId();
 
+  const isSupportedChain = chainId === 11155111 || chainId === 31337;
   const chainLabel = chainId === 31337 ? "anvil · local" : chainId === 11155111 ? "sepolia" : `chain ${chainId}`;
 
   return (
@@ -30,6 +33,20 @@ export function Masthead() {
           ))
         )}
       </div>
+
+      {isConnected && !isSupportedChain && (
+        <p className="error-note" style={{ marginTop: "1rem", textAlign: "center" }}>
+          ⚠️ You are connected to unsupported chain (id {chainId}). Please switch to Sepolia.{" "}
+          <button
+            className="primary"
+            style={{ marginLeft: "0.5rem", padding: "0.2rem 0.6rem" }}
+            onClick={() => switchChain({ chainId: sepolia.id })}
+          >
+            Switch to Sepolia
+          </button>
+        </p>
+      )}
+
       {error && <p className="error-note">{error.message.split("\n")[0]} - is a browser wallet installed?</p>}
     </header>
   );

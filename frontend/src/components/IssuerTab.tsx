@@ -30,9 +30,53 @@ export function IssuerTab() {
   const { writeContractAsync } = useWriteContract();
   const { signTypedDataAsync } = useSignTypedData();
 
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState<React.ReactNode>("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const getEtherscanLink = (hash: string) =>
+    chainId === 11155111 ? `https://sepolia.etherscan.io/tx/${hash}` : null;
+
+  async function act(label: string, action: () => Promise<React.ReactNode>) {
+    setBusy(true);
+    setError("");
+    setNote("");
+    try {
+      const res = await action();
+      setNote(<span><strong>{label}:</strong> {res}</span>);
+    } catch (err) {
+      setError(err instanceof Error ? err.message.split("\n")[0] : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function waitFor(hash: Hex): Promise<React.ReactNode> {
+    const etherscanUrl = getEtherscanLink(hash);
+    setNote(
+      <span>
+        Transaction submitted ({shortHex(hash, 8)}). Waiting for block confirmation...{" "}
+        {etherscanUrl && (
+          <a href={etherscanUrl} target="_blank" rel="noreferrer">
+            View on Etherscan
+          </a>
+        )}
+      </span>
+    );
+    await client!.waitForTransactionReceipt({ hash });
+    return (
+      <span>
+        confirmed in tx{" "}
+        {etherscanUrl ? (
+          <a href={etherscanUrl} target="_blank" rel="noreferrer">
+            {shortHex(hash, 8)}
+          </a>
+        ) : (
+          shortHex(hash, 8)
+        )}
+      </span>
+    );
+  }
 
   const profile = useReadContract({
     address: addresses.issuerRegistry,
@@ -63,24 +107,6 @@ export function IssuerTab() {
   const [batchSchemaLabel, setBatchSchemaLabel] = useState("BTECH_DEGREE_V1");
   const [batchLines, setBatchLines] = useState("");
   const [batchUri, setBatchUri] = useState("Class of 2027");
-
-  async function act(label: string, action: () => Promise<string>) {
-    setBusy(true);
-    setError("");
-    setNote("");
-    try {
-      setNote(`${label}: ${await action()}`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message.split("\n")[0] : String(err));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function waitFor(hash: Hex): Promise<string> {
-    await client!.waitForTransactionReceipt({ hash });
-    return `confirmed in tx ${shortHex(hash, 8)}`;
-  }
 
   function buildCredential(): { credential: Credential; error?: string } {
     if (!address) return { credential: null as never, error: "Connect a wallet first." };

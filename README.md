@@ -1,8 +1,18 @@
 # CertChain
 
-An on-chain credential and attestation protocol on Ethereum. Institutions register as issuers and publish credentials (degrees, certificates, memberships) as cryptographically signed attestations. Anyone in the world can verify a credential in seconds without contacting the issuer, and no one, including the platform, can forge or tamper with a record. Trust that comes from mathematics instead of middlemen.
+An on-chain credential and attestation protocol. Institutions register as issuers and publish credentials (degrees, certificates, memberships) as cryptographically signed attestations. Anyone in the world can verify a credential in seconds without contacting the issuer, and no one, including the platform, can forge or tamper with a record. Trust that comes from mathematics instead of middlemen.
 
 Built with Foundry, OpenZeppelin v5, wagmi, and viem. Runs entirely on free infrastructure: local anvil or the Sepolia testnet.
+
+## Live Deployment (Sepolia Testnet)
+
+Try the live application without installing anything or connecting a wallet: paste demo credential ID `0xeb781c69349019ac718b331e258cae7dee329cf36b86a6a141c58086977df6e0` into the **Verify** tab to inspect the green VALID stamp.
+
+- **IssuerRegistry:** [`0xA5A93F550FC33abD66147107e884D8331820a0E3`](https://sepolia.etherscan.io/address/0xA5A93F550FC33abD66147107e884D8331820a0E3#code) (Verified on Etherscan)
+- **CredentialRegistry:** [`0xD928b9FE38e42B29B725Bcf003F4B68c6db4cFCb`](https://sepolia.etherscan.io/address/0xD928b9FE38e42B29B725Bcf003F4B68c6db4cFCb#code) (Verified on Etherscan)
+- **SoulboundCertificate:** [`0x452DEFAfD0821FcBFD78A3a5a5F181d34A9e42Ea`](https://sepolia.etherscan.io/address/0x452DEFAfD0821FcBFD78A3a5a5F181d34A9e42Ea#code) (Verified on Etherscan)
+- **Deployment Details & Demo Data:** See [DEPLOYMENTS.md](file:///c:/Users/crevadek/Desktop/certchain/DEPLOYMENTS.md) and [WALKTHROUGH_SEPOLIA.md](file:///c:/Users/crevadek/Desktop/certchain/WALKTHROUGH_SEPOLIA.md).
+
 
 ## What is inside
 
@@ -135,16 +145,6 @@ Forged signatures are rejected. Tampering with any signed field invalidates the 
 
 Known simplifications, on purpose: revocation reasons are not stored, the schema registry is just a hash of a label, `_escape` in the SVG is crude, and there is no upgradeability. Each is a deliberate scope cut for a learning project, and each is a good interview talking point.
 
-## Extension ideas (good Tokyo material)
 
-- Rebuild the credential layer on EAS (the Ethereum Attestation Service) instead of a custom registry, and keep only the UX. At a hackathon, building on the sponsor's rails scores better than reinventing them.
-- ZK selective disclosure: prove "CGPA above 8" without revealing the CGPA, using the dataHash as commitment.
-- Real ENS integration: resolve issuer ENS names instead of storing display strings.
-- An indexer (Ponder or a subgraph) so My-credentials does not scan raw logs.
-- Schema registry contract with typed fields instead of free-form JSON.
 
-## A note on using this for ETHGlobal
-
-ETHGlobal requires projects to be built at the event. This repo is practice material: read it, break it, re-type it from memory, extend it. The judges will ask you why `_update` and not `transferFrom`, why the leaf is double-hashed, why the domain separator matters. If you can answer those from your own head, this project has done its job.
-
-MIT licensed. Built as a pre-hackathon learning project.
+MIT licensed. Built as a learning project.

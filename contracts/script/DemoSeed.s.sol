@@ -41,14 +41,33 @@ contract DemoSeed is Script {
             expiresAt: 0,
             nonce: 0
         });
-        bytes32 id = credentials.issue(cred);
-        certificate.mint(id, "Bachelor of Technology, Computer Engineering");
+        bytes32 validId = credentials.issue(cred);
+        certificate.mint(validId, "Bachelor of Technology, Computer Engineering");
+
+        // Seed a second credential and immediately revoke it for testing INVALID verification
+        CredentialRegistry.Credential memory revokedCred = CredentialRegistry.Credential({
+            issuer: deployer,
+            recipient: recipient,
+            schemaId: keccak256(bytes("DIPLOMA_V1")),
+            dataHash: keccak256(bytes("{\"course\":\"Web3 Development\",\"status\":\"revoked\"}")),
+            uri: "",
+            issuedAt: uint64(block.timestamp),
+            expiresAt: 0,
+            nonce: 1
+        });
+        bytes32 revokedId = credentials.issue(revokedCred);
+        credentials.revoke(revokedId);
 
         vm.stopBroadcast();
 
-        console2.log("Demo credential id:");
-        console2.logBytes32(id);
-        (bool ok, string memory reason) = credentials.verify(id);
-        console2.log("verify() =>", ok, reason);
+        console2.log("Valid demo credential id:");
+        console2.logBytes32(validId);
+        (bool okValid, string memory reasonValid) = credentials.verify(validId);
+        console2.log("Valid verify() =>", okValid, reasonValid);
+
+        console2.log("Revoked demo credential id:");
+        console2.logBytes32(revokedId);
+        (bool okRev, string memory reasonRev) = credentials.verify(revokedId);
+        console2.log("Revoked verify() =>", okRev, reasonRev);
     }
 }
