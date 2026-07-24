@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAccount, useChainId, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { shortHex } from "../lib/credential";
@@ -8,6 +9,8 @@ export function Masthead() {
   const { disconnect } = useDisconnect();
   const { switchChain } = useSwitchChain();
   const chainId = useChainId();
+
+  const [hasTriedConnect, setHasTriedConnect] = useState(false);
 
   const isSupportedChain = chainId === 11155111 || chainId === 31337;
   const chainLabel = chainId === 31337 ? "anvil · local" : chainId === 11155111 ? "sepolia" : `chain ${chainId}`;
@@ -26,11 +29,25 @@ export function Masthead() {
             <button className="quiet" onClick={() => disconnect()}>Disconnect</button>
           </>
         ) : (
-          connectors.map((connector) => (
-            <button key={connector.uid} className="quiet" onClick={() => connect({ connector })}>
-              {connector.name.toLowerCase().includes("mock") ? "Connect Dev Wallet" : `Connect ${connector.name}`}
-            </button>
-          ))
+          connectors.map((connector) => {
+            const label = connector.name.toLowerCase().includes("mock")
+              ? "Connect Dev Wallet"
+              : connector.name.toLowerCase().includes("injected")
+              ? "Connect Wallet (MetaMask)"
+              : `Connect ${connector.name}`;
+            return (
+              <button
+                key={connector.uid}
+                className="quiet"
+                onClick={() => {
+                  setHasTriedConnect(true);
+                  connect({ connector });
+                }}
+              >
+                {label}
+              </button>
+            );
+          })
         )}
       </div>
 
@@ -47,7 +64,13 @@ export function Masthead() {
         </p>
       )}
 
-      {error && <p className="error-note">{error.message.split("\n")[0]} - is a browser wallet installed?</p>}
+      {error && hasTriedConnect && (
+        <p className="error-note" style={{ marginTop: "0.75rem", textAlign: "center" }}>
+          {error.message.includes("Provider not found")
+            ? "No browser wallet (like MetaMask) found. Verification works without a wallet below!"
+            : error.message.split("\n")[0]}
+        </p>
+      )}
     </header>
   );
 }
