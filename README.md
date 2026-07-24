@@ -15,6 +15,24 @@ Try the live application without installing anything or connecting a wallet: pas
 - **SoulboundCertificate:** [`0x452DEFAfD0821FcBFD78A3a5a5F181d34A9e42Ea`](https://sepolia.etherscan.io/address/0x452DEFAfD0821FcBFD78A3a5a5F181d34A9e42Ea#code) (Verified on Etherscan)
 - **Deployment Details & Demo Data:** See [DEPLOYMENTS.md](file:///c:/Users/crevadek/Desktop/certchain/DEPLOYMENTS.md) and [WALKTHROUGH_SEPOLIA.md](file:///c:/Users/crevadek/Desktop/certchain/WALKTHROUGH_SEPOLIA.md).
 
+## Application Screenshots
+
+### 1. Verification Desk (Read-Only On-Chain Verification)
+Verify any credential on Sepolia testnet with zero login or wallet connection required.
+
+![Verify Tab Screenshot](docs/images/verify_tab.png)
+
+### 2. Issuer Desk (Institution Management & Batch Issuance)
+Register institutional profiles, issue EIP-712 signed attestations, execute Merkle batch issuing, and handle revocations.
+
+![Issuer Desk Screenshot](docs/images/issuer_desk.png)
+
+### 3. My Credentials Desk (Holder View & Soulbound Certificates)
+Inspect credentials issued to your address and mint non-transferable ERC-721 soulbound NFTs with dynamic on-chain SVG seals.
+
+![My Credentials Screenshot](docs/images/my_credentials.png)
+
+
 
 ## What is inside
 
