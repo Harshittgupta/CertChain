@@ -37,6 +37,7 @@
 
 ## Hosted Application Environment
 
+- **Live Deployed App:** [https://cert-chain-lake.vercel.app/](https://cert-chain-lake.vercel.app/)
 - **Repository:** `https://github.com/Harshittgupta/CertChain.git`
 - **Vercel Production Environment Variables:**
   - `VITE_ISSUER_REGISTRY` = `0xA5A93F550FC33abD66147107e884D8331820a0E3`

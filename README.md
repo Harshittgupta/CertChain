@@ -6,6 +6,8 @@ Built with Foundry, OpenZeppelin v5, wagmi, and viem. Runs entirely on free infr
 
 ## Live Deployment (Sepolia Testnet)
 
+- **Live Application:** [https://cert-chain-lake.vercel.app/](https://cert-chain-lake.vercel.app/)
+
 Try the live application without installing anything or connecting a wallet: paste demo credential ID `0xeb781c69349019ac718b331e258cae7dee329cf36b86a6a141c58086977df6e0` into the **Verify** tab to inspect the green VALID stamp.
 
 - **IssuerRegistry:** [`0xA5A93F550FC33abD66147107e884D8331820a0E3`](https://sepolia.etherscan.io/address/0xA5A93F550FC33abD66147107e884D8331820a0E3#code) (Verified on Etherscan)
